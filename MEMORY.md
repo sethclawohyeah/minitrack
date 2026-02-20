@@ -81,4 +81,8 @@ _No custom permissions yet. Defaults from PLAYBOOK.md apply._
 <!-- Track failures, surprises, and corrections -->
 <!-- - YYYY-MM-DD: what happened, what was learned -->
 
-_None yet._
+- 2026-02-20: Context reset requested by Seth. Treat pre-multi-agent setup work as archived history unless explicitly re-requested.
+
+### Context Resets
+
+- 2026-02-20: Seth requested a hard cutoff to post multi-agent setup context only. Pre-setup artifacts archived under `archive/pre-multi-agent/`.

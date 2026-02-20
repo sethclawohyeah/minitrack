@@ -1,0 +1,156 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIFEPAK Architecture Dossier</title>
+  <style>
+    :root {
+      --bg: #070b14;
+      --panel: rgba(255,255,255,0.06);
+      --panel-2: rgba(255,255,255,0.1);
+      --text: #eaf2ff;
+      --muted: #9fb3d1;
+      --accent: #69e6ff;
+      --ok: #63f3a4;
+      --med: #ffd166;
+      --low: #ff7f7f;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      background: radial-gradient(1000px 500px at 90% -10%, #1a3a6a55, transparent),
+                  radial-gradient(800px 500px at -10% 0%, #00c2ff33, transparent),
+                  var(--bg);
+      color: var(--text);
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 28px; }
+    .hero {
+      background: linear-gradient(135deg, #0f1c3388, #11294a88);
+      border: 1px solid #ffffff1f;
+      border-radius: 20px;
+      padding: 28px;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 10px 40px #00000050;
+    }
+    h1 { margin: 0 0 8px; font-size: 34px; }
+    .sub { color: var(--muted); margin-bottom: 18px; }
+    .chipbar { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: var(--panel);
+      border: 1px solid #ffffff20;
+      font-size: 13px;
+      color: #d9e8ff;
+    }
+    .grid { display: grid; gap: 14px; margin-top: 18px; }
+    .cols-2 { grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); }
+    .card {
+      background: var(--panel);
+      border: 1px solid #ffffff1a;
+      border-radius: 16px;
+      padding: 16px;
+      backdrop-filter: blur(8px);
+    }
+    .k { color: var(--muted); font-size: 13px; }
+    .v { font-size: 18px; margin-top: 6px; }
+    .section { margin-top: 24px; }
+    .section h2 { margin: 0 0 10px; font-size: 20px; }
+    details {
+      background: var(--panel);
+      border: 1px solid #ffffff1a;
+      border-radius: 14px;
+      padding: 12px 14px;
+      margin-bottom: 10px;
+    }
+    summary { cursor: pointer; font-weight: 600; }
+    summary span { color: var(--muted); font-weight: 400; margin-left: 8px; }
+    ul { margin: 8px 0 0 18px; }
+    li { margin: 6px 0; color: #dce8ff; }
+    table { width: 100%; border-collapse: collapse; overflow: hidden; border-radius: 12px; }
+    th, td { text-align: left; padding: 10px; border-bottom: 1px solid #ffffff12; vertical-align: top; }
+    th { color: #a9c1e4; font-weight: 600; }
+    .badge { padding: 4px 8px; border-radius: 999px; font-size: 12px; border: 1px solid #ffffff30; }
+    .high { background: #0f402a; color: var(--ok); }
+    .medium { background: #4a3a12; color: var(--med); }
+    .low { background: #4a1a1a; color: var(--low); }
+    .footer { margin: 24px 0 8px; color: var(--muted); font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <h1>LIFEPAK Architecture Dossier</h1>
+      <div class="sub">Engineering-oriented subsystem analysis for replication feasibility (non-clinical scope).</div>
+      <div class="chipbar">
+        <div class="chip">Primary: LIFEPAK 1000</div>
+        <div class="chip">Sibling target: LIFEPAK CR2 (user-confirmed)</div>
+        <div class="chip">Method: Public-source inference + confidence tags</div>
+      </div>
+    </div>
+
+    <div class="grid cols-2">
+      <div class="card"><div class="k">Most likely prior sibling family</div><div class="v">CR Plus / EXPRESS</div></div>
+      <div class="card"><div class="k">Current comparison target</div><div class="v">CR2</div></div>
+      <div class="card"><div class="k">Research status</div><div class="v">LP1000 deep pass complete</div></div>
+      <div class="card"><div class="k">Next action</div><div class="v">CR2-focused subsystem deep-dive</div></div>
+    </div>
+
+    <div class="section">
+      <h2>Subsystem map</h2>
+      <details open>
+        <summary>Power Architecture <span>Battery, rails, charging, isolation</span></summary>
+        <ul>
+          <li>LP1000 supports removable battery strategy with field-service behavior and automated self-test cadence.</li>
+          <li>Expected partition: low-voltage digital/analog rails + isolated high-voltage charge domain.</li>
+          <li><span class="badge medium">Medium confidence</span> on exact PMIC/topology unless teardown-confirmed.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>High-Voltage Therapy Path <span>Charge, store, deliver biphasic pulse</span></summary>
+        <ul>
+          <li>BTE waveform family with impedance compensation is established.</li>
+          <li>Likely HV charger + capacitor bank + controlled switching bridge + dump/interlock logic.</li>
+          <li><span class="badge high">High confidence</span> on functional blocks, <span class="badge medium">Medium confidence</span> on exact switching devices.</li>
+        </ul>
+      </details>
+      <details>
+        <summary>ECG + Rhythm Analysis <span>Acquisition, filtering, SAS decision loop</span></summary>
+        <ul>
+          <li>SAS decision framework and motion gating behavior are documented at product level.</li>
+          <li>Expected AFE path: protection, filtering, ADC, quality gating, classifier.</li>
+          <li><span class="badge high">High confidence</span> on workflow, <span class="badge medium">Medium confidence</span> on exact feature implementation.</li>
+        </ul>
+      </details>
+    </div>
+
+    <div class="section card">
+      <h2 style="margin-top:0">LP1000 vs CR2 delta scaffold</h2>
+      <table>
+        <thead>
+          <tr><th>Area</th><th>LIFEPAK 1000</th><th>LIFEPAK CR2 (to resolve)</th><th>Confidence</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>User model</td><td>Responder-oriented, broader workflow options</td><td>Public-access simplified workflow, modern guidance stack</td><td><span class="badge medium">Medium</span></td></tr>
+          <tr><td>Power/service</td><td>Field battery option strategy</td><td>Needs exact CR2 service model mapping</td><td><span class="badge low">Low</span></td></tr>
+          <tr><td>Comms/data</td><td>Legacy transfer/service pathway known</td><td>Likely expanded connectivity/log pathways vs older platforms</td><td><span class="badge low">Low</span></td></tr>
+          <tr><td>Safety/compliance</td><td>Established IEC 60601-family context</td><td>Need CR2-specific standards matrix and revision differences</td><td><span class="badge medium">Medium</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="section card">
+      <h2 style="margin-top:0">Replication boundary (important)</h2>
+      <ul>
+        <li>This dossier supports engineering analysis and bench prototyping only.</li>
+        <li>Clinical-equivalent defibrillator behavior requires full regulatory and safety validation stack.</li>
+        <li>Do not treat inferred architecture as deployable medical design without formal compliance process.</li>
+      </ul>
+    </div>
+
+    <div class="footer">Generated for Seth • Modern interactive brief • File: lifepak-research.html</div>
+  </div>
+</body>
+</html>
