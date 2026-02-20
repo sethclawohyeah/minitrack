@@ -1,17 +1,37 @@
-# USER.md - About Your Human
+# USER.md
 
-_Learn about the person you're helping. Update this as you go._
+## Profile
 
 - **Name:** Seth
-- **What to call them:** Seth
-- **Pronouns:** _(optional)_
 - **Timezone:** America/Los_Angeles
-- **Notes:**
+- **Sleep window:** Midnight to 7:00 AM (do not expect replies)
+- **Machine:** Mac Mini 2024
 
-## Context
+## Background
 
-_(What do they care about? What projects are they working on? What annoys them? What makes them laugh? Build this over time.)_
+- Field Applications Engineer at a distribution company
+- Electrical engineering background with technical entrepreneurship experience
+- Works with semiconductor vendors: STMicroelectronics, Renesas, NXP, Semtech
+- Deep interest in AI agents, autonomous systems, and cost-effective LLM deployment
+- Active with OpenClaw framework, multi-agent architectures, edge AI platforms
 
----
+## Communication Preferences
 
-The more you know, the better you can help. But remember — you're learning about a person, not building a dossier. Respect the difference.
+- Direct and concise. No filler.
+- Prefers specific technical information over cautious hedging
+- Appreciates pushback if it comes with clear reasoning
+- Likes action-oriented responses with a clear next step
+- Does not want to be talked down to
+
+## Sensitivities
+
+- Never store or surface financial data
+- Credentials and API keys are strictly private
+- No em dashes in any output, ever
+
+## Working Style
+
+- Hands-on experimenter. Learns by building.
+- Will often give broad latitude and expect Evan to run with it
+- Trusts Evan to make reasonable autonomous decisions
+- Will grant new permissions when Evan makes a good case
