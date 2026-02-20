@@ -1,89 +1,48 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>LIFEPAK 1000 - Dynamic Architecture Map</title>
-  <style>
-    body{margin:0;font-family:Inter,system-ui;background:#0b1020;color:#eaf1ff}
-    .wrap{max-width:1100px;margin:0 auto;padding:24px}
-    .hero{padding:20px;border:1px solid #ffffff24;border-radius:16px;background:linear-gradient(135deg,#1a2d57,#0e1a33)}
-    h1{margin:0 0 8px}.muted{color:#a9bddf}
-    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
-    input,select{background:#111a2f;border:1px solid #2c3f66;color:#eaf1ff;padding:8px 10px;border-radius:10px}
-    details{background:#11172a;border:1px solid #253455;border-radius:12px;padding:10px 12px;margin:10px 0}
-    summary{cursor:pointer;font-weight:600}
-    .chip{display:inline-block;padding:4px 8px;border-radius:999px;background:#1b2945;border:1px solid #355084;color:#b9d3ff;font-size:12px;margin:4px 6px 0 0}
-    .item{padding:8px 10px;border:1px solid #223453;border-radius:10px;margin:8px 0;background:#0d1528}
-    .k{font-size:12px;color:#9cb2d8}
-  </style>
-</head>
-<body>
-<div class="wrap">
-  <div class="hero">
-    <h1>LIFEPAK 1000 Architecture Map</h1>
-    <div class="muted">Dynamic subsystem-to-category mapping for engineering analysis</div>
-  </div>
-
-  <div class="toolbar">
-    <input id="q" placeholder="Filter by subsystem/component/category/template" style="min-width:320px" />
-    <select id="cat"></select>
-  </div>
-
-  <div id="out"></div>
-</div>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>LIFEPAK 1000 Architecture Map</title>
+<style>body{margin:0;font-family:Inter,system-ui;background:#0a1020;color:#eaf1ff}.wrap{max-width:1120px;margin:0 auto;padding:24px}.hero{padding:18px;border:1px solid #ffffff22;border-radius:14px;background:linear-gradient(135deg,#132748,#0f1c36)}.muted{color:#a8bddf}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}input,select{background:#101a30;border:1px solid #2a3f68;color:#eaf1ff;padding:8px 10px;border-radius:10px}details{margin:10px 0;background:#0f172b;border:1px solid #223657;border-radius:12px;padding:10px}summary{cursor:pointer;font-weight:600}.item{padding:8px 10px;border:1px solid #223657;border-radius:10px;margin:8px 0;background:#0c1528}.k{font-size:12px;color:#9cb3d8}.tag{display:inline-block;font-size:11px;margin-left:8px;padding:2px 8px;border-radius:999px;border:1px solid #315382;background:#183056;color:#b5d4ff}</style></head>
+<body><div class="wrap"><div class="hero"><h1>LIFEPAK 1000</h1><div class="muted">Mapped to your revised block/category taxonomy.</div></div>
+<div class="toolbar"><input id="q" placeholder="Filter subsystem/component/category/block" style="min-width:320px"/><select id="cat"></select></div><div id="out"></div></div>
 <script>
-const data = [
-  {subsystem:'Power Architecture',component:'Main battery pack',category:'Power Mgt',block:'Battery',template:'BATTERY'},
-  {subsystem:'Power Architecture',component:'Battery charge supervision',category:'Power Mgt',block:'Battery Charger',template:'BATTERY_CHARGER'},
-  {subsystem:'Power Architecture',component:'Rail conversion',category:'Power Mgt',block:'DC/DC',template:'DCDC'},
-  {subsystem:'Power Architecture',component:'Buck/Boost rail',category:'Power Mgt',block:'Buck/Boost Regulator',template:'BUCK/BOOST REG'},
-  {subsystem:'Power Architecture',component:'Low-noise local rails',category:'Power Mgt',block:'LDO',template:'LDO'},
-  {subsystem:'Power Architecture',component:'Power sequencing/monitoring',category:'Power Mgt',block:'Power Management Circuit',template:'PWR_MGT_CIRCUIT'},
-  {subsystem:'HV Therapy Path',component:'HV charging switch stage',category:'Power Electronics',block:'MOSFET/IGBT',template:'MOSFET_IGBT'},
-  {subsystem:'HV Therapy Path',component:'Gate drive chain',category:'Analog',block:'Gate Drivers',template:'GATE DRIVERS'},
-  {subsystem:'HV Therapy Path',component:'Pulse energy storage',category:'Discretes / Passives',block:'Capacitors',template:'PAS-CAPACITOR'},
-  {subsystem:'HV Therapy Path',component:'Transformer/magnetics',category:'Power Mgt',block:'TRANSFORMER',template:'TRANSFORMER'},
-  {subsystem:'HV Therapy Path',component:'Output relay/interlock',category:'Electromechanical',block:'Relay',template:'RELAY'},
-  {subsystem:'HV Therapy Path',component:'Patient protection network',category:'Discretes / Passives',block:'Protection Device',template:'PROTEC_DEVICE'},
-  {subsystem:'ECG AFE',component:'Input switching',category:'Analog',block:'Analog Switch',template:'ANAL_SWITCH'},
-  {subsystem:'ECG AFE',component:'Signal conditioning',category:'Analog',block:'OP-AMP',template:'OP-AMP'},
-  {subsystem:'ECG AFE',component:'Anti-alias/cleanup',category:'Analog',block:'Filter',template:'FILTER'},
-  {subsystem:'ECG AFE',component:'Digitization',category:'Analog',block:'Analog to Digital Convertor',template:'ADC'},
-  {subsystem:'Control Compute',component:'Main controller',category:'MCU / CPU / DSP / DSC',block:'MCU',template:'MCU'},
-  {subsystem:'Control Compute',component:'Clock source',category:'Clocking / Timing Mgt',block:'Crystal Oscillators',template:'CRYSTAL'},
-  {subsystem:'Control Compute',component:'Timing supervision',category:'Analog',block:'Timing IC',template:'TIMING IC'},
-  {subsystem:'Memory',component:'Firmware storage',category:'Memory',block:'Flash',template:'FLASH'},
-  {subsystem:'Memory',component:'Config/event retention',category:'Memory',block:'EEPROM',template:'EEPROM'},
-  {subsystem:'UI',component:'Display panel',category:'Display',block:'LCD',template:'LCD'},
-  {subsystem:'UI',component:'Display control',category:'Analog',block:'LCD Driver',template:'LCD DRIVER'},
-  {subsystem:'UI',component:'Status indicators',category:'Opto & Lighting',block:'LED',template:'LED'},
-  {subsystem:'UI',component:'Prompt audio output',category:'Analog',block:'Audio Amplifier',template:'AUDIO_AMP'},
-  {subsystem:'UI',component:'Acoustic transducer',category:'Electromechanical',block:'Speaker',template:'SPEAKER'},
-  {subsystem:'UI',component:'Button matrix',category:'Electromechanical',block:'Switch',template:'SWITCHES'},
-  {subsystem:'Data/Service',component:'Wired service interface',category:'Communication / Interface',block:'Wired Communication',template:'WIRED_COMM'},
-  {subsystem:'Data/Service',component:'Legacy optical transfer',category:'Communication / Interface',block:'Wireless Communication',template:'WLESS_COMM'},
-  {subsystem:'Interconnect',component:'Pads/patient connector',category:'Interconnect',block:'Connector',template:'CONNECTOR'},
-  {subsystem:'Sensors/Control',component:'Battery telemetry',category:'Sensor',block:'Current Sensor',template:'CURRENT SENSOR'},
-  {subsystem:'Sensors/Control',component:'Battery/rail telemetry',category:'Sensor',block:'Voltage Sensor',template:'VOLTAGE SENSOR'},
-  {subsystem:'Sensors/Control',component:'Thermal monitoring',category:'Sensor',block:'Temperature',template:'TEMPERATURE'}
-];
-
-const catSel=document.getElementById('cat');
-const q=document.getElementById('q');
-const out=document.getElementById('out');
-const cats=['All',...new Set(data.map(d=>d.category))];
-catSel.innerHTML=cats.map(c=>`<option>${c}</option>`).join('');
-
-function render(){
-  const f=q.value.toLowerCase();
-  const c=catSel.value;
-  const filtered=data.filter(d=> (c==='All'||d.category===c) && JSON.stringify(d).toLowerCase().includes(f));
-  const groups={};
-  filtered.forEach(d=>{groups[d.subsystem]??=[];groups[d.subsystem].push(d)});
-  out.innerHTML=Object.entries(groups).map(([k,v])=>`<details open><summary>${k} <span class='chip'>${v.length} items</span></summary>${v.map(x=>`<div class='item'><div><strong>${x.component}</strong></div><div class='k'>${x.category} • ${x.block} • ${x.template}</div></div>`).join('')}</details>`).join('') || '<p class="muted">No matches</p>';
-}
-q.addEventListener('input',render);catSel.addEventListener('change',render);render();
-</script>
-</body>
-</html>
+const rows=[
+['Power Architecture','Main battery pack','POWER MGT','Battery'],
+['Power Architecture','Battery charging/supervision','POWER MGT','Battery Charger'],
+['Power Architecture','Primary conversion stage','POWER MGT','DC/DC'],
+['Power Architecture','Rail regulation','POWER MGT','Buck/Boost Regulator'],
+['Power Architecture','Noise-sensitive local rails','POWER MGT','LDO'],
+['Power Architecture','Power sequencing and health','POWER MGT','Power Management Circuit'],
+['HV Therapy Path','Charge switch stage','ANALOG','MOSFET/IGBT'],
+['HV Therapy Path','Gate control','ANALOG','Gate Drivers'],
+['HV Therapy Path','Pulse storage bank','DISCRETES / PASSIVES','Capacitors'],
+['HV Therapy Path','HV magnetics','POWER MGT','TRANSFORMER'],
+['HV Therapy Path','Output safety disconnect','ELECTROMECHANICAL','Relay'],
+['HV Therapy Path','Defib/patient protection net','DISCRETES / PASSIVES','Protection Device'],
+['ECG Analog Front End','Input path switching','ANALOG','Analog Switch'],
+['ECG Analog Front End','Signal conditioning','ANALOG','OP-AMP'],
+['ECG Analog Front End','Noise and anti-alias shaping','ANALOG','Filter'],
+['ECG Analog Front End','Signal digitization','ANALOG','Analog to Digital Convertor'],
+['Control Compute','Main system controller','MCU / CPU / DSP / DSC','MCU'],
+['Control Compute','Timing/watchdog','ANALOG','Timing IC'],
+['Control Compute','Clock source','CLOCKING / TIMING MGT','Crystal Oscillators'],
+['Memory & Logs','Firmware image','MEMORY','Flash'],
+['Memory & Logs','Config/event persistence','MEMORY','EEPROM'],
+['UI / HMI','Display panel','DISPLAY','LCD'],
+['UI / HMI','Display control','ANALOG','Display Driver'],
+['UI / HMI','Status indicators','OPTO & LIGHTING','LED'],
+['UI / HMI','Audio output stage','ANALOG','Audio Amplifier'],
+['UI / HMI','Acoustic output transducer','ELECTROMECHANICAL','Speaker'],
+['UI / HMI','User input controls','ELECTROMECHANICAL','Switch'],
+['Data / Service','Wired service channel','COMMUNICATION / INTERFACE','Wired Communication'],
+['Data / Service','Wireless/optical transfer path','COMMUNICATION / INTERFACE','Wireless Communication'],
+['Interconnect','Pads/accessory physical interfaces','INTERCONNECT','Connector'],
+['Sensors & Control','Current telemetry','SENSOR','Current Sensor'],
+['Sensors & Control','Voltage telemetry','SENSOR','Voltage Sensor'],
+['Sensors & Control','Thermal telemetry','SENSOR','Temperature']
+].map(([subsystem,component,category,block])=>({subsystem,component,category,block}));
+const cats=['All',...new Set(rows.map(r=>r.category))];
+const q=document.getElementById('q'),cat=document.getElementById('cat'),out=document.getElementById('out');
+cat.innerHTML=cats.map(c=>`<option>${c}</option>`).join('');
+function render(){const f=q.value.toLowerCase();const c=cat.value;const data=rows.filter(r=>(c==='All'||r.category===c)&&`${r.subsystem} ${r.component} ${r.category} ${r.block}`.toLowerCase().includes(f));const g={};data.forEach(r=>(g[r.subsystem]??=[]).push(r));out.innerHTML=Object.entries(g).map(([k,v])=>`<details open><summary>${k}<span class='tag'>${v.length}</span></summary>${v.map(x=>`<div class='item'><div><strong>${x.component}</strong></div><div class='k'>${x.category} • ${x.block}</div></div>`).join('')}</details>`).join('')||'<p class="muted">No matches</p>';}
+q.addEventListener('input',render);cat.addEventListener('change',render);render();
+</script></body></html>
