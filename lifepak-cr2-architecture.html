@@ -1,46 +1,44 @@
 <!doctype html>
 <html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>LIFEPAK CR2 Architecture Map</title>
-<style>body{margin:0;font-family:Inter,system-ui;background:#091019;color:#eef5ff}.wrap{max-width:1120px;margin:0 auto;padding:24px}.hero{padding:18px;border:1px solid #ffffff22;border-radius:14px;background:linear-gradient(135deg,#10313f,#102545)}.muted{color:#a5bed9}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}input,select{background:#101a30;border:1px solid #2a3f68;color:#eaf1ff;padding:8px 10px;border-radius:10px}details{margin:10px 0;background:#0f172b;border:1px solid #223657;border-radius:12px;padding:10px}summary{cursor:pointer;font-weight:600}.item{padding:8px 10px;border:1px solid #223657;border-radius:10px;margin:8px 0;background:#0c1528}.k{font-size:12px;color:#9cb3d8}.tag{display:inline-block;font-size:11px;margin-left:8px;padding:2px 8px;border-radius:999px;border:1px solid #315382;background:#183056;color:#b5d4ff}</style></head>
-<body><div class="wrap"><div class="hero"><h1>LIFEPAK CR2</h1><div class="muted">Mapped to your revised block/category taxonomy.</div></div>
-<div class="toolbar"><input id="q" placeholder="Filter subsystem/component/category/block" style="min-width:320px"/><select id="cat"></select></div><div id="out"></div></div>
+<title>LIFEPAK CR2 Architecture Map + PN Shortlist</title>
+<style>body{margin:0;font-family:Inter,system-ui;background:#091019;color:#eef5ff}.wrap{max-width:1150px;margin:0 auto;padding:24px}.hero{padding:18px;border:1px solid #ffffff22;border-radius:14px;background:linear-gradient(135deg,#10313f,#102545)}.muted{color:#a5bed9}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}input,select{background:#101a30;border:1px solid #2a3f68;color:#eaf1ff;padding:8px 10px;border-radius:10px}details{margin:10px 0;background:#0f172b;border:1px solid #223657;border-radius:12px;padding:10px}summary{cursor:pointer;font-weight:600}.item{padding:10px;border:1px solid #223657;border-radius:10px;margin:8px 0;background:#0c1528}.k{font-size:12px;color:#9cb3d8}.pn{font-size:12px;color:#bfe1ff;margin-top:4px}.c{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid #315382;background:#183056;color:#b5d4ff;display:inline-block;margin-top:6px}.warn{margin-top:10px;font-size:12px;color:#ffd38a}</style></head>
+<body><div class="wrap"><div class="hero"><h1>LIFEPAK CR2</h1><div class="muted">Block mapping + candidate PN shortlist (same approved vendor list)</div><div class="warn">Non-clinical research only. PNs are candidate matches, not clinically validated design choices.</div></div>
+<div class="toolbar"><input id="q" placeholder="Filter subsystem/component/category/block/vendor/pn" style="min-width:360px"/><select id="cat"></select></div><div id="out"></div></div>
 <script>
 const rows=[
-['Power Architecture','Primary battery module','POWER MGT','Battery'],
-['Power Architecture','Conversion rails','POWER MGT','DC/DC'],
-['Power Architecture','Local regulation','POWER MGT','LDO'],
-['Power Architecture','Power control and self-test readiness','POWER MGT','Power Management Circuit'],
-['HV Therapy Path','HV switching network','ANALOG','MOSFET/IGBT'],
-['HV Therapy Path','Switch drive timing','ANALOG','Gate Drivers'],
-['HV Therapy Path','Pulse capacitor bank','DISCRETES / PASSIVES','Capacitors'],
-['HV Therapy Path','Protection/interlock path','DISCRETES / PASSIVES','Protection Device'],
-['HV Therapy Path','Safety disconnect','ELECTROMECHANICAL','Relay'],
-['ECG + Analysis','Input selection','ANALOG','MUX'],
-['ECG + Analysis','AFE gain stage','ANALOG','OP-AMP'],
-['ECG + Analysis','Signal filtering','ANALOG','Filter'],
-['ECG + Analysis','Conversion to digital domain','ANALOG','Analog to Digital Convertor'],
-['Compute / Control','Primary controller','MCU / CPU / DSP / DSC','MCU'],
-['Compute / Control','Clock source','CLOCKING / TIMING MGT','Crystal Oscillators'],
-['Compute / Control','Supervision and deterministic timing','ANALOG','Timing IC'],
-['Memory & Logs','Program storage','MEMORY','Flash'],
-['Memory & Logs','Persistent settings/events','MEMORY','EEPROM'],
-['UI / Guidance','Display module','DISPLAY','LCD'],
-['UI / Guidance','Display control','ANALOG','Display Driver'],
-['UI / Guidance','Prompt/status lighting','OPTO & LIGHTING','LED'],
-['UI / Guidance','Audio output amplifier','ANALOG','Audio Amplifier'],
-['UI / Guidance','Acoustic output','ELECTROMECHANICAL','Speaker'],
-['Connectivity','Wired interface','COMMUNICATION / INTERFACE','Wired Communication'],
-['Connectivity','Wireless interface','COMMUNICATION / INTERFACE','Wireless Communication'],
-['Connectivity','RF endpoint','COMMUNICATION / INTERFACE','RF Component-Antenna'],
-['Interconnect','Patient/accessory interfaces','INTERCONNECT','Connector'],
-['Sensors & Control','Current monitoring','SENSOR','Current Sensor'],
-['Sensors & Control','Voltage monitoring','SENSOR','Voltage Sensor'],
-['Sensors & Control','Thermal monitoring','SENSOR','Temperature'],
-['Sensors & Control','Motion artifact awareness','SENSOR','Motion']
-].map(([subsystem,component,category,block])=>({subsystem,component,category,block}));
-const cats=['All',...new Set(rows.map(r=>r.category))];
+{ss:'Power Architecture',comp:'Primary battery module interface',cat:'POWER MGT',block:'Battery',pn1:'TE 1-928918-1',pn2:'Hirose DF13-2P-1.25V',conf:'Low'},
+{ss:'Power Architecture',comp:'Primary conversion rails',cat:'POWER MGT',block:'DC/DC',pn1:'ST L7987',pn2:'onsemi NCP3065',conf:'Medium'},
+{ss:'Power Architecture',comp:'Local regulation',cat:'POWER MGT',block:'LDO',pn1:'onsemi NCP718',pn2:'ST LD39130',conf:'Medium'},
+{ss:'Power Architecture',comp:'Power readiness/self-test supervision',cat:'POWER MGT',block:'Power Management Circuit',pn1:'Renesas DA9062',pn2:'NXP PF3000',conf:'Low'},
+{ss:'HV Therapy Path',comp:'HV switching network',cat:'ANALOG',block:'MOSFET/IGBT',pn1:'Infineon IPT015N10N5',pn2:'onsemi FGH40N60SFD',conf:'Medium'},
+{ss:'HV Therapy Path',comp:'Switch drive timing',cat:'ANALOG',block:'Gate Drivers',pn1:'Infineon 1EDN7550',pn2:'ST STGAP2S',conf:'Medium'},
+{ss:'HV Therapy Path',comp:'Pulse capacitor bank protection',cat:'DISCRETES / PASSIVES',block:'Protection Device',pn1:'Littelfuse SMCJ440A',pn2:'Littelfuse V14E275P',conf:'Medium'},
+{ss:'HV Therapy Path',comp:'Safety disconnect',cat:'ELECTROMECHANICAL',block:'Relay',pn1:'TE T9AS1D22-12',pn2:'TE OEG OJ-SS-112LM',conf:'Low'},
+{ss:'ECG + Analysis',comp:'Input selection',cat:'ANALOG',block:'MUX',pn1:'NXP NX3L4053',pn2:'NXP CBTL04083A',conf:'Low'},
+{ss:'ECG + Analysis',comp:'AFE gain stage',cat:'ANALOG',block:'OP-AMP',pn1:'ST TSV772',pn2:'Renesas ISL28134',conf:'Medium'},
+{ss:'ECG + Analysis',comp:'Signal filtering',cat:'ANALOG',block:'Filter',pn1:'ST TSV772 (active filter)',pn2:'Renesas ISL28134 (active filter)',conf:'Low'},
+{ss:'ECG + Analysis',comp:'Digitization',cat:'ANALOG',block:'Analog to Digital Convertor',pn1:'NXP LPC55S69 (internal ADC)',pn2:'ST STM32H753 (internal ADC)',conf:'Low'},
+{ss:'Compute / Control',comp:'Primary controller',cat:'MCU / CPU / DSP / DSC',block:'MCU',pn1:'NXP i.MX RT1062',pn2:'Renesas RA6M5',conf:'Medium'},
+{ss:'Compute / Control',comp:'Clock source',cat:'CLOCKING / TIMING MGT',block:'Crystal Oscillators',pn1:'Renesas 8N4Q001',pn2:'Renesas 5P49V6965',conf:'Low'},
+{ss:'Compute / Control',comp:'Supervision/timing',cat:'ANALOG',block:'Timing IC',pn1:'Renesas 5P35023',pn2:'NXP PCA21125',conf:'Low'},
+{ss:'Memory & Logs',comp:'Program storage',cat:'MEMORY',block:'Flash',pn1:'Renesas AT25SF641B',pn2:'ST M95M04',conf:'Low'},
+{ss:'Memory & Logs',comp:'Persistent settings/events',cat:'MEMORY',block:'EEPROM',pn1:'ST M24M02',pn2:'Renesas AT24CM02',conf:'Medium'},
+{ss:'UI / Guidance',comp:'Display control',cat:'ANALOG',block:'Display Driver',pn1:'NXP PCF8576D',pn2:'NXP PCA8538',conf:'Low'},
+{ss:'UI / Guidance',comp:'Display module',cat:'DISPLAY',block:'LCD',pn1:'N/A in vendor scope',pn2:'N/A in vendor scope',conf:'N/A'},
+{ss:'UI / Guidance',comp:'Prompt/status lighting',cat:'OPTO & LIGHTING',block:'LED',pn1:'N/A in vendor scope',pn2:'N/A in vendor scope',conf:'N/A'},
+{ss:'UI / Guidance',comp:'Audio output amplifier',cat:'ANALOG',block:'Audio Amplifier',pn1:'NXP TFA9874',pn2:'ST TDA7266',conf:'Low'},
+{ss:'UI / Guidance',comp:'Acoustic output',cat:'ELECTROMECHANICAL',block:'Speaker',pn1:'N/A in vendor scope',pn2:'N/A in vendor scope',conf:'N/A'},
+{ss:'Connectivity',comp:'Wired interface',cat:'COMMUNICATION / INTERFACE',block:'Wired Communication',pn1:'NXP TJA1042 (CAN)',pn2:'Renesas RAA78813',conf:'Low'},
+{ss:'Connectivity',comp:'Wireless interface',cat:'COMMUNICATION / INTERFACE',block:'Wireless Communication',pn1:'NXP IW416',pn2:'NXP QN9090',conf:'Low'},
+{ss:'Connectivity',comp:'RF endpoint',cat:'COMMUNICATION / INTERFACE',block:'RF Component-Antenna',pn1:'TE 2118059-1',pn2:'TE 2173220-1',conf:'Low'},
+{ss:'Interconnect',comp:'Patient/accessory interfaces',cat:'INTERCONNECT',block:'Connector',pn1:'TE MicroMatch series',pn2:'Hirose DF40 series',conf:'Medium'},
+{ss:'Sensors & Control',comp:'Current monitoring',cat:'SENSOR',block:'Current Sensor',pn1:'Allegro ACS37612',pn2:'Melexis MLX91220',conf:'Medium'},
+{ss:'Sensors & Control',comp:'Voltage monitoring',cat:'SENSOR',block:'Voltage Sensor',pn1:'NXP MC33771C',pn2:'Renesas ISL94202',conf:'Medium'},
+{ss:'Sensors & Control',comp:'Thermal monitoring',cat:'SENSOR',block:'Temperature',pn1:'ST STTS22H',pn2:'NXP P3T1755',conf:'Medium'},
+{ss:'Sensors & Control',comp:'Motion artifact awareness',cat:'SENSOR',block:'Motion',pn1:'NXP FXLS8974CF',pn2:'ST LIS2DH12',conf:'Medium'}
+];
 const q=document.getElementById('q'),cat=document.getElementById('cat'),out=document.getElementById('out');
-cat.innerHTML=cats.map(c=>`<option>${c}</option>`).join('');
-function render(){const f=q.value.toLowerCase();const c=cat.value;const data=rows.filter(r=>(c==='All'||r.category===c)&&`${r.subsystem} ${r.component} ${r.category} ${r.block}`.toLowerCase().includes(f));const g={};data.forEach(r=>(g[r.subsystem]??=[]).push(r));out.innerHTML=Object.entries(g).map(([k,v])=>`<details open><summary>${k}<span class='tag'>${v.length}</span></summary>${v.map(x=>`<div class='item'><div><strong>${x.component}</strong></div><div class='k'>${x.category} • ${x.block}</div></div>`).join('')}</details>`).join('')||'<p class="muted">No matches</p>';}
+cat.innerHTML=['All',...new Set(rows.map(r=>r.cat))].map(c=>`<option>${c}</option>`).join('');
+function render(){const f=q.value.toLowerCase(),c=cat.value;const data=rows.filter(r=>(c==='All'||r.cat===c)&&JSON.stringify(r).toLowerCase().includes(f));const g={};data.forEach(r=>(g[r.ss]??=[]).push(r));out.innerHTML=Object.entries(g).map(([k,v])=>`<details open><summary>${k} <span class='c'>${v.length}</span></summary>${v.map(x=>`<div class='item'><div><strong>${x.comp}</strong></div><div class='k'>${x.cat} • ${x.block}</div><div class='pn'>${x.pn1} | ${x.pn2}</div><div class='c'>Confidence: ${x.conf}</div></div>`).join('')}</details>`).join('')||'<p class="muted">No matches</p>';}
 q.addEventListener('input',render);cat.addEventListener('change',render);render();
 </script></body></html>

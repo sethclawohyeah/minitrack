@@ -1,48 +1,47 @@
 <!doctype html>
 <html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>LIFEPAK 1000 Architecture Map</title>
-<style>body{margin:0;font-family:Inter,system-ui;background:#0a1020;color:#eaf1ff}.wrap{max-width:1120px;margin:0 auto;padding:24px}.hero{padding:18px;border:1px solid #ffffff22;border-radius:14px;background:linear-gradient(135deg,#132748,#0f1c36)}.muted{color:#a8bddf}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}input,select{background:#101a30;border:1px solid #2a3f68;color:#eaf1ff;padding:8px 10px;border-radius:10px}details{margin:10px 0;background:#0f172b;border:1px solid #223657;border-radius:12px;padding:10px}summary{cursor:pointer;font-weight:600}.item{padding:8px 10px;border:1px solid #223657;border-radius:10px;margin:8px 0;background:#0c1528}.k{font-size:12px;color:#9cb3d8}.tag{display:inline-block;font-size:11px;margin-left:8px;padding:2px 8px;border-radius:999px;border:1px solid #315382;background:#183056;color:#b5d4ff}</style></head>
-<body><div class="wrap"><div class="hero"><h1>LIFEPAK 1000</h1><div class="muted">Mapped to your revised block/category taxonomy.</div></div>
-<div class="toolbar"><input id="q" placeholder="Filter subsystem/component/category/block" style="min-width:320px"/><select id="cat"></select></div><div id="out"></div></div>
+<title>LIFEPAK 1000 Architecture Map + PN Shortlist</title>
+<style>body{margin:0;font-family:Inter,system-ui;background:#0a1020;color:#eaf1ff}.wrap{max-width:1150px;margin:0 auto;padding:24px}.hero{padding:18px;border:1px solid #ffffff22;border-radius:14px;background:linear-gradient(135deg,#132748,#0f1c36)}.muted{color:#a8bddf}.toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:14px 0}input,select{background:#101a30;border:1px solid #2a3f68;color:#eaf1ff;padding:8px 10px;border-radius:10px}details{margin:10px 0;background:#0f172b;border:1px solid #223657;border-radius:12px;padding:10px}summary{cursor:pointer;font-weight:600}.item{padding:10px;border:1px solid #223657;border-radius:10px;margin:8px 0;background:#0c1528}.k{font-size:12px;color:#9cb3d8}.pn{font-size:12px;color:#bfe1ff;margin-top:4px}.c{font-size:11px;padding:2px 8px;border-radius:999px;border:1px solid #315382;background:#183056;color:#b5d4ff;display:inline-block;margin-top:6px}.warn{margin-top:10px;font-size:12px;color:#ffd38a}</style></head>
+<body><div class="wrap"><div class="hero"><h1>LIFEPAK 1000</h1><div class="muted">Block mapping + candidate PN shortlist (ST/onsemi/Renesas/Infineon/NXP/TE/Hirose/Melexis/Allegro/Littelfuse)</div><div class="warn">Non-clinical research only. PNs are candidate matches, not medically validated design approvals.</div></div>
+<div class="toolbar"><input id="q" placeholder="Filter subsystem/component/category/block/vendor/pn" style="min-width:360px"/><select id="cat"></select></div><div id="out"></div></div>
 <script>
 const rows=[
-['Power Architecture','Main battery pack','POWER MGT','Battery'],
-['Power Architecture','Battery charging/supervision','POWER MGT','Battery Charger'],
-['Power Architecture','Primary conversion stage','POWER MGT','DC/DC'],
-['Power Architecture','Rail regulation','POWER MGT','Buck/Boost Regulator'],
-['Power Architecture','Noise-sensitive local rails','POWER MGT','LDO'],
-['Power Architecture','Power sequencing and health','POWER MGT','Power Management Circuit'],
-['HV Therapy Path','Charge switch stage','ANALOG','MOSFET/IGBT'],
-['HV Therapy Path','Gate control','ANALOG','Gate Drivers'],
-['HV Therapy Path','Pulse storage bank','DISCRETES / PASSIVES','Capacitors'],
-['HV Therapy Path','HV magnetics','POWER MGT','TRANSFORMER'],
-['HV Therapy Path','Output safety disconnect','ELECTROMECHANICAL','Relay'],
-['HV Therapy Path','Defib/patient protection net','DISCRETES / PASSIVES','Protection Device'],
-['ECG Analog Front End','Input path switching','ANALOG','Analog Switch'],
-['ECG Analog Front End','Signal conditioning','ANALOG','OP-AMP'],
-['ECG Analog Front End','Noise and anti-alias shaping','ANALOG','Filter'],
-['ECG Analog Front End','Signal digitization','ANALOG','Analog to Digital Convertor'],
-['Control Compute','Main system controller','MCU / CPU / DSP / DSC','MCU'],
-['Control Compute','Timing/watchdog','ANALOG','Timing IC'],
-['Control Compute','Clock source','CLOCKING / TIMING MGT','Crystal Oscillators'],
-['Memory & Logs','Firmware image','MEMORY','Flash'],
-['Memory & Logs','Config/event persistence','MEMORY','EEPROM'],
-['UI / HMI','Display panel','DISPLAY','LCD'],
-['UI / HMI','Display control','ANALOG','Display Driver'],
-['UI / HMI','Status indicators','OPTO & LIGHTING','LED'],
-['UI / HMI','Audio output stage','ANALOG','Audio Amplifier'],
-['UI / HMI','Acoustic output transducer','ELECTROMECHANICAL','Speaker'],
-['UI / HMI','User input controls','ELECTROMECHANICAL','Switch'],
-['Data / Service','Wired service channel','COMMUNICATION / INTERFACE','Wired Communication'],
-['Data / Service','Wireless/optical transfer path','COMMUNICATION / INTERFACE','Wireless Communication'],
-['Interconnect','Pads/accessory physical interfaces','INTERCONNECT','Connector'],
-['Sensors & Control','Current telemetry','SENSOR','Current Sensor'],
-['Sensors & Control','Voltage telemetry','SENSOR','Voltage Sensor'],
-['Sensors & Control','Thermal telemetry','SENSOR','Temperature']
-].map(([subsystem,component,category,block])=>({subsystem,component,category,block}));
-const cats=['All',...new Set(rows.map(r=>r.category))];
+{ss:'Power Architecture',comp:'Main battery pack interface',cat:'POWER MGT',block:'Battery',pn1:'TE 1-928918-1',pn2:'Hirose DF13-2P-1.25V',conf:'Low'},
+{ss:'Power Architecture',comp:'Battery charging/supervision',cat:'POWER MGT',block:'Battery Charger',pn1:'Renesas ISL94202',pn2:'NXP MC33771C',conf:'Medium'},
+{ss:'Power Architecture',comp:'Primary conversion stage',cat:'POWER MGT',block:'DC/DC',pn1:'ST L7987',pn2:'onsemi NCP3065',conf:'Medium'},
+{ss:'Power Architecture',comp:'Rail regulation',cat:'POWER MGT',block:'Buck/Boost Regulator',pn1:'ST ST1PS02',pn2:'Infineon TLF35584',conf:'Low'},
+{ss:'Power Architecture',comp:'Low-noise local rails',cat:'POWER MGT',block:'LDO',pn1:'onsemi NCP718',pn2:'ST LD39130',conf:'Medium'},
+{ss:'Power Architecture',comp:'Power sequencing/health',cat:'POWER MGT',block:'Power Management Circuit',pn1:'Renesas DA9062',pn2:'NXP PF3000',conf:'Low'},
+{ss:'HV Therapy Path',comp:'HV switch stage',cat:'ANALOG',block:'MOSFET/IGBT',pn1:'Infineon IPT015N10N5',pn2:'onsemi FGH40N60SFD',conf:'Medium'},
+{ss:'HV Therapy Path',comp:'Gate control',cat:'ANALOG',block:'Gate Drivers',pn1:'Infineon 1EDN7550',pn2:'ST STGAP2S',conf:'Medium'},
+{ss:'HV Therapy Path',comp:'Pulse storage bank protection',cat:'DISCRETES / PASSIVES',block:'Protection Device',pn1:'Littelfuse SMCJ440A',pn2:'Littelfuse V14E275P',conf:'Medium'},
+{ss:'HV Therapy Path',comp:'Output safety disconnect',cat:'ELECTROMECHANICAL',block:'Relay',pn1:'TE T9AS1D22-12',pn2:'TE OEG OJ-SS-112LM',conf:'Low'},
+{ss:'HV Therapy Path',comp:'Magnetics drive path',cat:'POWER MGT',block:'TRANSFORMER',pn1:'N/A in vendor scope',pn2:'N/A in vendor scope',conf:'N/A'},
+{ss:'HV Therapy Path',comp:'Pulse capacitor bank',cat:'DISCRETES / PASSIVES',block:'Capacitors',pn1:'N/A in vendor scope',pn2:'N/A in vendor scope',conf:'N/A'},
+{ss:'ECG Analog Front End',comp:'Input path switching',cat:'ANALOG',block:'Analog Switch',pn1:'NXP NX3L4053',pn2:'NXP CBTL04083A',conf:'Low'},
+{ss:'ECG Analog Front End',comp:'Signal conditioning',cat:'ANALOG',block:'OP-AMP',pn1:'ST TSV772',pn2:'Renesas ISL28134',conf:'Medium'},
+{ss:'ECG Analog Front End',comp:'Filtering active stages',cat:'ANALOG',block:'Filter',pn1:'ST TSV772 (active filter)',pn2:'Renesas ISL28134 (active filter)',conf:'Low'},
+{ss:'ECG Analog Front End',comp:'Signal digitization',cat:'ANALOG',block:'Analog to Digital Convertor',pn1:'NXP LPC55S69 (internal ADC)',pn2:'ST STM32H753 (internal ADC)',conf:'Low'},
+{ss:'Control Compute',comp:'Main system controller',cat:'MCU / CPU / DSP / DSC',block:'MCU',pn1:'Renesas RA6M5',pn2:'NXP i.MX RT1062',conf:'Medium'},
+{ss:'Control Compute',comp:'Timing/watchdog',cat:'ANALOG',block:'Timing IC',pn1:'Renesas 5P35023',pn2:'NXP PCA21125',conf:'Low'},
+{ss:'Control Compute',comp:'Clock source',cat:'CLOCKING / TIMING MGT',block:'Crystal Oscillators',pn1:'Renesas 8N4Q001',pn2:'Renesas 5P49V6965',conf:'Low'},
+{ss:'Memory & Logs',comp:'Firmware image',cat:'MEMORY',block:'Flash',pn1:'Renesas AT25SF641B',pn2:'ST M95M04 (if serial mem used)',conf:'Low'},
+{ss:'Memory & Logs',comp:'Config/event persistence',cat:'MEMORY',block:'EEPROM',pn1:'ST M24M02',pn2:'Renesas AT24CM02',conf:'Medium'},
+{ss:'UI / HMI',comp:'Display control path',cat:'ANALOG',block:'Display Driver',pn1:'NXP PCF8576D',pn2:'NXP PCA8538',conf:'Low'},
+{ss:'UI / HMI',comp:'Display panel',cat:'DISPLAY',block:'LCD',pn1:'N/A in vendor scope',pn2:'N/A in vendor scope',conf:'N/A'},
+{ss:'UI / HMI',comp:'Status indicators',cat:'OPTO & LIGHTING',block:'LED',pn1:'N/A in vendor scope',pn2:'N/A in vendor scope',conf:'N/A'},
+{ss:'UI / HMI',comp:'Audio output stage',cat:'ANALOG',block:'Audio Amplifier',pn1:'NXP TFA9874',pn2:'ST TDA7266',conf:'Low'},
+{ss:'UI / HMI',comp:'Acoustic output transducer',cat:'ELECTROMECHANICAL',block:'Speaker',pn1:'N/A in vendor scope',pn2:'N/A in vendor scope',conf:'N/A'},
+{ss:'UI / HMI',comp:'User input controls',cat:'ELECTROMECHANICAL',block:'Switch',pn1:'TE FSM2JH',pn2:'TE KMR2',conf:'Low'},
+{ss:'Data / Service',comp:'Wired service channel',cat:'COMMUNICATION / INTERFACE',block:'Wired Communication',pn1:'NXP TJA1042 (CAN)',pn2:'Renesas RAA78813 (LIN/CAN context)',conf:'Low'},
+{ss:'Data / Service',comp:'Wireless/optical transfer',cat:'COMMUNICATION / INTERFACE',block:'Wireless Communication',pn1:'NXP IW416',pn2:'NXP QN9090',conf:'Low'},
+{ss:'Interconnect',comp:'Pads/accessory interfaces',cat:'INTERCONNECT',block:'Connector',pn1:'TE MicroMatch series',pn2:'Hirose DF40 series',conf:'Medium'},
+{ss:'Sensors & Control',comp:'Current telemetry',cat:'SENSOR',block:'Current Sensor',pn1:'Allegro ACS37612',pn2:'Melexis MLX91220',conf:'Medium'},
+{ss:'Sensors & Control',comp:'Voltage telemetry',cat:'SENSOR',block:'Voltage Sensor',pn1:'NXP MC33771C',pn2:'Renesas ISL94202',conf:'Medium'},
+{ss:'Sensors & Control',comp:'Thermal telemetry',cat:'SENSOR',block:'Temperature',pn1:'ST STTS22H',pn2:'NXP P3T1755',conf:'Medium'}
+];
 const q=document.getElementById('q'),cat=document.getElementById('cat'),out=document.getElementById('out');
-cat.innerHTML=cats.map(c=>`<option>${c}</option>`).join('');
-function render(){const f=q.value.toLowerCase();const c=cat.value;const data=rows.filter(r=>(c==='All'||r.category===c)&&`${r.subsystem} ${r.component} ${r.category} ${r.block}`.toLowerCase().includes(f));const g={};data.forEach(r=>(g[r.subsystem]??=[]).push(r));out.innerHTML=Object.entries(g).map(([k,v])=>`<details open><summary>${k}<span class='tag'>${v.length}</span></summary>${v.map(x=>`<div class='item'><div><strong>${x.component}</strong></div><div class='k'>${x.category} • ${x.block}</div></div>`).join('')}</details>`).join('')||'<p class="muted">No matches</p>';}
+cat.innerHTML=['All',...new Set(rows.map(r=>r.cat))].map(c=>`<option>${c}</option>`).join('');
+function render(){const f=q.value.toLowerCase(),c=cat.value;const data=rows.filter(r=>(c==='All'||r.cat===c)&&JSON.stringify(r).toLowerCase().includes(f));const g={};data.forEach(r=>(g[r.ss]??=[]).push(r));out.innerHTML=Object.entries(g).map(([k,v])=>`<details open><summary>${k} <span class='c'>${v.length}</span></summary>${v.map(x=>`<div class='item'><div><strong>${x.comp}</strong></div><div class='k'>${x.cat} • ${x.block}</div><div class='pn'>${x.pn1} | ${x.pn2}</div><div class='c'>Confidence: ${x.conf}</div></div>`).join('')}</details>`).join('')||'<p class="muted">No matches</p>';}
 q.addEventListener('input',render);cat.addEventListener('change',render);render();
 </script></body></html>
