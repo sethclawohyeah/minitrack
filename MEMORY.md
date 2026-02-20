@@ -57,7 +57,6 @@ Do not ask Seth before compressing. Just do it. If something important was archi
 
 - Role: Field Applications Engineer at a distribution company
 - Background: electrical engineering, technical entrepreneurship
-- Vendors: STMicroelectronics, Renesas, NXP, Semtech
 - Focus areas: semiconductor design-ins, proof-of-concept projects, technical documentation
 - AI interests: OpenClaw framework, multi-agent systems, edge AI (STM32MP2, STM32N6), cost-effective LLM deployment
 
