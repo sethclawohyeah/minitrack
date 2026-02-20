@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LIFEPAK CR2 - Dynamic Architecture Map</title>
+  <style>
+    body{margin:0;font-family:Inter,system-ui;background:#090f1a;color:#ecf4ff}
+    .wrap{max-width:1100px;margin:0 auto;padding:24px}
+    .hero{padding:20px;border:1px solid #ffffff24;border-radius:16px;background:linear-gradient(135deg,#0f2e38,#102245)}
+    h1{margin:0 0 8px}.muted{color:#a5bfd9}
+    .toolbar{display:flex;gap:10px;flex-wrap:wrap;margin:16px 0}
+    input,select{background:#111a2f;border:1px solid #2c3f66;color:#eaf1ff;padding:8px 10px;border-radius:10px}
+    details{background:#11172a;border:1px solid #253455;border-radius:12px;padding:10px 12px;margin:10px 0}
+    summary{cursor:pointer;font-weight:600}
+    .item{padding:8px 10px;border:1px solid #223453;border-radius:10px;margin:8px 0;background:#0d1528}
+    .k{font-size:12px;color:#9cb2d8}
+    .tag{display:inline-block;padding:2px 8px;border-radius:999px;border:1px solid #375f8f;background:#1a2f4a;color:#b7d7ff;font-size:11px;margin-left:8px}
+  </style>
+</head>
+<body>
+<div class="wrap">
+  <div class="hero">
+    <h1>LIFEPAK CR2 Architecture Map</h1>
+    <div class="muted">Dynamic subsystem mapping with CR2-specific emphasis (connectivity + guided AED workflow)</div>
+  </div>
+
+  <div class="toolbar">
+    <input id="q" placeholder="Filter..." style="min-width:320px" />
+    <select id="cat"></select>
+  </div>
+
+  <div id="out"></div>
+</div>
+<script>
+const data=[
+  {subsystem:'Power Architecture',component:'Primary battery module',category:'Power Mgt',block:'Battery',template:'BATTERY',note:'field replaceable strategy depends on exact SKU'},
+  {subsystem:'Power Architecture',component:'Power conversion rails',category:'Power Mgt',block:'DC/DC',template:'DCDC',note:'digital + analog + HV control rails'},
+  {subsystem:'Power Architecture',component:'Local clean rails',category:'Power Mgt',block:'LDO',template:'LDO',note:'noise-sensitive AFE domains'},
+  {subsystem:'Power Architecture',component:'Power supervision',category:'Power Mgt',block:'Power Management Circuit',template:'PWR_MGT_CIRCUIT',note:'self-test and readiness logic'},
+  {subsystem:'HV Therapy Path',component:'HV switch network',category:'Power Electronics',block:'MOSFET/IGBT',template:'MOSFET_IGBT',note:'biphasic delivery path'},
+  {subsystem:'HV Therapy Path',component:'Gate control',category:'Analog',block:'Gate Drivers',template:'GATE DRIVERS',note:'timed phase control'},
+  {subsystem:'HV Therapy Path',component:'Energy storage',category:'Discretes / Passives',block:'Capacitors',template:'PAS-CAPACITOR',note:'pulse reservoir bank'},
+  {subsystem:'HV Therapy Path',component:'Output interlock/safety',category:'Electromechanical',block:'Relay',template:'RELAY',note:'inhibit + discharge safeguards'},
+  {subsystem:'ECG + Analysis',component:'AFE switching/mux',category:'Analog',block:'MUX',template:'MUX',note:'electrode path selection'},
+  {subsystem:'ECG + Analysis',component:'AFE amplification',category:'Analog',block:'OP-AMP',template:'OP-AMP',note:'low-level ECG amplification'},
+  {subsystem:'ECG + Analysis',component:'Filtering',category:'Analog',block:'Filter',template:'FILTER',note:'artifact and anti-alias conditioning'},
+  {subsystem:'ECG + Analysis',component:'Digitization',category:'Analog',block:'Analog to Digital Convertor',template:'ADC',note:'analysis pipeline ingress'},
+  {subsystem:'Compute/Control',component:'Main processing',category:'MCU / CPU / DSP / DSC',block:'MCU',template:'MCU',note:'state machine + decision control'},
+  {subsystem:'Compute/Control',component:'Clock source',category:'Clocking / Timing Mgt',block:'Crystal Oscillators',template:'CRYSTAL',note:'timing reference'},
+  {subsystem:'Compute/Control',component:'Timing/watchdog',category:'Analog',block:'Timing IC',template:'TIMING IC',note:'fail-safe supervision'},
+  {subsystem:'Memory/Logs',component:'Firmware storage',category:'Memory',block:'Flash',template:'FLASH',note:'program + assets'},
+  {subsystem:'Memory/Logs',component:'Event/config persistence',category:'Memory',block:'EEPROM',template:'EEPROM',note:'logs/settings'},
+  {subsystem:'UI/Guidance',component:'Display',category:'Display',block:'LCD',template:'LCD',note:'guided response workflow'},
+  {subsystem:'UI/Guidance',component:'Display control',category:'Analog',block:'Display Driver',template:'DISPLAY_DRIVER',note:'panel drive'},
+  {subsystem:'UI/Guidance',component:'Status indicators',category:'Opto & Lighting',block:'LED',template:'LED',note:'ready/attention states'},
+  {subsystem:'UI/Guidance',component:'Prompt audio',category:'Analog',block:'Audio Amplifier',template:'AUDIO_AMP',note:'voice prompt output'},
+  {subsystem:'UI/Guidance',component:'Speaker output',category:'Electromechanical',block:'Speaker',template:'SPEAKER',note:'rescuer guidance'},
+  {subsystem:'Connectivity',component:'Wired interface',category:'Communication / Interface',block:'Wired Communication',template:'WIRED_COMM',note:'service/config pathways'},
+  {subsystem:'Connectivity',component:'Wireless interface',category:'Communication / Interface',block:'Wireless Communication',template:'WLESS_COMM',note:'CR2-class connectivity emphasis'},
+  {subsystem:'Connectivity',component:'RF front-end element',category:'Communication / Interface',block:'RF Component-Antenna',template:'ANTENNA',note:'if wireless SKU enabled'},
+  {subsystem:'Interconnect',component:'Pad and accessory interfaces',category:'Interconnect',block:'Connector',template:'CONNECTOR',note:'patient-applied interconnect'},
+  {subsystem:'Sensors/Control',component:'Battery current telemetry',category:'Sensor',block:'Current Sensor',template:'CURRENT SENSOR',note:'power diagnostics'},
+  {subsystem:'Sensors/Control',component:'Voltage telemetry',category:'Sensor',block:'Voltage Sensor',template:'VOLTAGE SENSOR',note:'charge and rail monitoring'},
+  {subsystem:'Sensors/Control',component:'Temperature telemetry',category:'Sensor',block:'Temperature',template:'TEMPERATURE',note:'safety + compensation'},
+  {subsystem:'Sensors/Control',component:'Motion awareness',category:'Sensor',block:'Motion',template:'MOTION',note:'artifact gating / handling'}
+];
+const catSel=document.getElementById('cat'), q=document.getElementById('q'), out=document.getElementById('out');
+const cats=['All',...new Set(data.map(d=>d.category))]; catSel.innerHTML=cats.map(c=>`<option>${c}</option>`).join('');
+function render(){
+  const f=q.value.toLowerCase(), c=catSel.value;
+  const filtered=data.filter(d=>(c==='All'||d.category===c)&&JSON.stringify(d).toLowerCase().includes(f));
+  const groups={}; filtered.forEach(d=>{(groups[d.subsystem]??=[]).push(d)});
+  out.innerHTML=Object.entries(groups).map(([s,items])=>`<details open><summary>${s}<span class='tag'>${items.length}</span></summary>${items.map(i=>`<div class='item'><div><strong>${i.component}</strong></div><div class='k'>${i.category} • ${i.block} • ${i.template}</div><div class='k'>${i.note}</div></div>`).join('')}</details>`).join('')||'<p class="muted">No matches</p>';
+}
+q.addEventListener('input',render);catSel.addEventListener('change',render);render();
+</script>
+</body>
+</html>
